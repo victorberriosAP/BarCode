@@ -1,1 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lector Cámara</title>
+    <script src="https://unpkg.com/html5-qrcode"></script>
+    <style>
+        body { font-family: Arial; padding: 20px; }
+        input, button { width: 100%; padding: 12px; font-size: 18px; margin-top: 15px; }
+        #reader { width: 300px; margin-top: 20px; display:none; }
+    </style>
+</head>
+<body>
+
+    <h2>Escanear Código</h2>
+
+    <button id="btnStart">📷 Abrir cámara</button>
+
+    <div id="reader"></div>
+
+    <label>Resultado:</label>
+    <input type="text" id="codigo" placeholder="Aquí aparecerá lo escaneado" />
+
+    <script>
+        const reader = new Html5Qrcode("reader");
+        const btn = document.getElementById("btnStart");
+
+        btn.addEventListener("click", () => {
+            document.getElementById("reader").style.display = "block";
+
+            reader.start(
+                { facingMode: "environment" },    // Cámara trasera
+                { fps: 10, qrbox: 250 },
+                (decodedText) => {
+                    document.getElementById("codigo").value = decodedText;
+                    reader.stop();
+                    document.getElementById("reader").style.display = "none";
+                }
+            ).catch(err => console.error(err));
+        });
+    </script>
+
+</body>
+</html>
 
